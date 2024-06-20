@@ -1,0 +1,68 @@
+{
+  "args": "Namespace(accuracy_graph=True, accuracy_graph_complement=True, accuracy_threshold=0.5, config='config/inductive/nell995.yaml', recall_graph=True, recall_graph_complement=True, recall_threshold=0.5, seed=1024)",
+  "cfg": {
+    "dataset": {
+      "class": "IndNELL-995",
+      "root": "~/datasets/knowledge_graphs/",
+      "version": "v4"
+    },
+    "model": {
+      "aggregate_func": "pna",
+      "class": "DistinctiveNBFNet",
+      "dependent": true,
+      "hidden_dims": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32
+      ],
+      "input_dim": 32,
+      "layer_norm": true,
+      "message_func": "distmult",
+      "remove_one_hop": true,
+      "short_cut": true
+    },
+    "optimizer": {
+      "class": "Adam",
+      "lr": 0.005
+    },
+    "output_dir": "~/scratch/experiments/",
+    "task": {
+      "adversarial_temperature": 0.5,
+      "metric": [
+        "mr",
+        "mrr",
+        "hits@1",
+        "hits@3",
+        "hits@10",
+        "hits@10_50"
+      ],
+      "num_negative": 32,
+      "strict_negative": true
+    },
+    "train": {
+      "batch_size": 16,
+      "gpus": [
+        0
+      ],
+      "log_interval": 10000,
+      "num_epoch": 20
+    }
+  },
+  "device": "cuda",
+  "opts.accuracy_graph": true,
+  "opts.accuracy_graph_complement": false,
+  "opts.accuracy_threshold": 0.002,
+  "opts.recall_graph": false,
+  "opts.recall_graph_complement": false,
+  "opts.recall_threshold": 0.2,
+  "tuning": true,
+  "vars": {
+    "gpus": [
+      0
+    ],
+    "version": "v4"
+  }
+}

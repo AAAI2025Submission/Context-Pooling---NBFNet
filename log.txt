@@ -1,0 +1,384 @@
+13:19:43   Random seed: 1024
+13:19:43   Config file: config/inductive/fb15k237.yaml
+13:19:43   {'dataset': {'class': 'IndFB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v2'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 64, 'gpus': [0], 'log_interval': 100, 'num_epoch': 0}}
+13:19:52   IndFB15k-237 dataset
+13:19:52   #train: 9739, #valid: 1166, #test: 478
+13:20:48   Random seed: 1024
+13:20:48   Config file: config/inductive/fb15k237.yaml
+13:20:48   {'dataset': {'class': 'IndFB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v2'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 64, 'gpus': [0], 'log_interval': 100, 'num_epoch': 0}}
+13:20:56   IndFB15k-237 dataset
+13:20:56   #train: 9739, #valid: 1166, #test: 478
+13:21:45   Random seed: 1024
+13:21:45   Config file: config/inductive/fb15k237.yaml
+13:21:45   {'dataset': {'class': 'IndFB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v2'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 64, 'gpus': [0], 'log_interval': 100, 'num_epoch': 0}}
+13:21:45   IndFB15k-237 dataset
+13:21:45   #train: 9739, #valid: 1166, #test: 478
+13:21:49   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:21:49   Evaluate on valid
+13:22:53   Random seed: 1024
+13:22:53   Config file: config/inductive/fb15k237.yaml
+13:22:53   {'dataset': {'class': 'IndFB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v2'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 64, 'gpus': [0], 'log_interval': 100, 'num_epoch': 0}}
+13:22:53   IndFB15k-237 dataset
+13:22:53   #train: 9739, #valid: 1166, #test: 478
+13:22:56   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:22:56   Evaluate on valid
+14:50:13   Random seed: 1024
+14:50:13   Config file: config/inductive/fb15k237.yaml
+14:50:13   {'dataset': {'class': 'IndFB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v2'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 64, 'gpus': [0], 'log_interval': 100, 'num_epoch': 0}}
+14:50:13   IndFB15k-237 dataset
+14:50:13   #train: 9739, #valid: 1166, #test: 478
+14:50:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:50:16   Evaluate on valid
+14:54:16   Random seed: 1024
+14:54:16   Config file: config/inductive/fb15k237.yaml
+14:54:16   {'dataset': {'class': 'IndFB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v2'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 64, 'gpus': [0], 'log_interval': 100, 'num_epoch': 0}}
+14:54:16   IndFB15k-237 dataset
+14:54:16   #train: 9739, #valid: 1166, #test: 478
+14:54:20   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+14:54:20   Evaluate on valid
+15:11:47   Random seed: 1024
+15:11:47   Config file: config/inductive/fb15k237.yaml
+15:11:47   {'dataset': {'class': 'IndFB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v2'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 2, 'gpus': [0], 'log_interval': 100, 'num_epoch': 20}}
+15:11:47   IndFB15k-237 dataset
+15:11:47   #train: 9739, #valid: 1166, #test: 478
+15:11:49   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:11:49   Epoch 0 begin
+15:12:48   Random seed: 1024
+15:12:48   Config file: config/inductive/fb15k237.yaml
+15:12:48   {'dataset': {'class': 'IndFB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v2'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 2, 'gpus': [0], 'log_interval': 100, 'num_epoch': 20}}
+15:12:48   IndFB15k-237 dataset
+15:12:48   #train: 9739, #valid: 1166, #test: 478
+15:12:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+15:12:51   Epoch 0 begin
+20:58:01   Random seed: 1024
+20:58:01   Config file: config/inductive/fb15k237.yaml
+20:58:01   {'dataset': {'class': 'IndFB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v2'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 4,
+           'gpus': [0],
+           'log_interval': 10000,
+           'num_epoch': 20}}
+20:58:01   IndFB15k-237 dataset
+20:58:01   #train: 9739, #valid: 1166, #test: 478
+20:58:04   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+20:58:04   Epoch 0 begin
+12:40:50   Random seed: 1024
+12:40:50   Config file: config/transductive/fb15k237.yaml
+12:40:50   {'dataset': {'class': 'FB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v1'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 16,
+           'gpus': None,
+           'log_interval': 10000,
+           'num_epoch': 20}}
+12:41:29   Random seed: 1024
+12:41:29   Config file: config/transductive/fb15k237.yaml
+12:41:29   {'dataset': {'class': 'FB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v1'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 16,
+           'gpus': None,
+           'log_interval': 10000,
+           'num_epoch': 20}}
+12:42:04   Random seed: 1024
+12:42:04   Config file: config/inductive/fb15k237.yaml
+12:42:04   {'dataset': {'class': 'IndFB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v1'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 16,
+           'gpus': None,
+           'log_interval': 10000,
+           'num_epoch': 20}}
+12:42:04   IndFB15k-237 dataset
+12:42:04   #train: 4245, #valid: 489, #test: 205
+12:42:05   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:42:05   Epoch 0 begin
+12:43:14   Random seed: 1024
+12:43:14   Config file: config/inductive/fb15k237.yaml
+12:43:14   {'dataset': {'class': 'IndFB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v1'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 16,
+           'gpus': None,
+           'log_interval': 10000,
+           'num_epoch': 20}}
+12:43:14   IndFB15k-237 dataset
+12:43:14   #train: 4245, #valid: 489, #test: 205
+12:43:15   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:43:15   Epoch 0 begin
+12:51:53   Random seed: 1024
+12:51:53   Config file: config/inductive/fb15k237.yaml
+12:51:53   {'dataset': {'class': 'IndFB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v1'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 16,
+           'gpus': None,
+           'log_interval': 10000,
+           'num_epoch': 20}}
+12:51:53   IndFB15k-237 dataset
+12:51:53   #train: 4245, #valid: 489, #test: 205
+12:51:53   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:51:53   Epoch 0 begin
+12:55:19   Random seed: 1024
+12:55:19   Config file: config/inductive/fb15k237.yaml
+12:55:19   {'dataset': {'class': 'IndFB15k-237',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v1'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'DistinctiveNBFNet',
+           'dependent': True,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'remove_one_hop': True,
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 0.5,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 16,
+           'gpus': None,
+           'log_interval': 10000,
+           'num_epoch': 20}}
+12:55:19   IndFB15k-237 dataset
+12:55:19   #train: 4245, #valid: 489, #test: 205
+12:55:19   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+12:55:19   Epoch 0 begin

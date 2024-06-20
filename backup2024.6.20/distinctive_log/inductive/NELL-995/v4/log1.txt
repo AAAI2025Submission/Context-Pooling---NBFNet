@@ -1,0 +1,31 @@
+(raylet) [2024-06-08 12:46:53,534 E 2787455 2787476] (raylet) file_system_monitor.cc:111: /tmp/ray/session_2024-06-07_23-00-10_960462_2786420 is over 95% full, available space: 10168328192; capacity: 1887901937664. Object creation will fail if spilling is required.
+Trial status: 18 TERMINATED | 1 RUNNING | 1 PENDING
+Current time: 2024-06-08 12:46:59. Total running time: 13hr 46min 41s
+Logical resource usage: 10.0/40 CPUs, 1.0/1 GPUs (0.0/1.0 accelerator_type:V100)
+╭─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial name              status         ...ccuracy_threshold     ....recall_threshold   opts.accuracy_graph     opts.recall_graph     ..._graph_complement     ..._graph_complement       iter     total time (s)        mrr │
+├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ objective_a764b_00018   RUNNING                       0.001                    0.06    True                    True                  True                     False                                                         │
+│ objective_a764b_00000   TERMINATED                    0.002                    0.2     True                    False                 False                    False                         1            2206.61   0.370324 │
+│ objective_a764b_00001   TERMINATED                    0.001                    0.06    True                    False                 True                     True                          1            4155.18   0.348066 │
+│ objective_a764b_00002   TERMINATED                    0.008                    0.04    False                   False                 False                    False                         1            1057.01   0.261282 │
+│ objective_a764b_00003   TERMINATED                    0.003                    0.4     False                   False                 True                     False                         1            2047.08   0.343565 │
+│ objective_a764b_00004   TERMINATED                    0.6                      0.004   True                    False                 True                     True                          1            4246.07   0.35837  │
+│ objective_a764b_00005   TERMINATED                    0.007                    0.08    True                    False                 False                    True                          1            3034.91   0.328915 │
+│ objective_a764b_00006   TERMINATED                    0.005                    0.005   False                   True                  False                    False                         1            2110.2    0.344115 │
+│ objective_a764b_00007   TERMINATED                    0.01                     0.8     True                    True                  True                     False                         1            4217.7    0.335045 │
+│ objective_a764b_00008   TERMINATED                    0.02                     0.4     False                   False                 True                     False                         1            2147.89   0.330315 │
+│ objective_a764b_00009   TERMINATED                    0.001                    0.001   True                    False                 False                    True                          1            3396.42   0.360127 │
+│ objective_a764b_00010   TERMINATED                    0.5                      0.002   False                   False                 True                     True                          1            3145.14   0.318771 │
+│ objective_a764b_00011   TERMINATED                    0.5                      0.001   True                    False                 True                     False                         1            3186.91   0.365254 │
+│ objective_a764b_00012   TERMINATED                    0.007                    0.005   False                   False                 False                    True                          1            2026.27   0.310098 │
+│ objective_a764b_00013   TERMINATED                    0.6                      0.06    True                    False                 True                     False                         1            2256.06   0.335952 │
+│ objective_a764b_00014   TERMINATED                    0.05                     0.07    False                   False                 False                    True                          1            1538.36   0.333049 │
+│ objective_a764b_00015   TERMINATED                    0.002                    0.1     True                    False                 False                    False                         1            1535.59   0.330552 │
+│ objective_a764b_00016   TERMINATED                    0.8                      0.3     False                   False                 True                     False                         1            1530.18   0.282252 │
+│ objective_a764b_00017   TERMINATED                    0.007                    0.01    True                    False                 False                    True                          1            2759.1    0.348102 │
+│ objective_a764b_00019   PENDING                       0.03                     0.05    True                    True                  True                     True                                                          │
+
+
+
+│ objective_a764b_00000   TERMINATED                    0.002                    0.2     True                    False                 False                    False                         1            2206.61   0.370324 │

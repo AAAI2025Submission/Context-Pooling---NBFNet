@@ -1,0 +1,29 @@
+Logical resource usage: 10.0/40 CPUs, 1.0/1 GPUs (0.0/1.0 accelerator_type:V100)
+?─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────?
+│ Trial name              status         ...ccuracy_threshold     ....recall_threshold   opts.accuracy_graph     opts.recall_graph     ..._graph_complement     ..._graph_complement       iter     total time (s)        mrr │
+├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ objective_2b6f2_00007   RUNNING                       0.01                     0.8     True                    True                  True                     False                                                         │
+│ objective_2b6f2_00000   TERMINATED                    0.002                    0.2     True                    False                 False                    False                         1           1208.81    0.429732 │
+│ objective_2b6f2_00001   TERMINATED                    0.001                    0.06    True                    False                 True                     True                          1           2330.1     0.422631 │
+│ objective_2b6f2_00002   TERMINATED                    0.008                    0.04    False                   False                 False                    False                         1            708.997   0.279233 │
+│ objective_2b6f2_00003   TERMINATED                    0.003                    0.4     False                   False                 True                     False                         1           1177.64    0.422284 │
+│ objective_2b6f2_00004   TERMINATED                    0.6                      0.004   True                    False                 True                     True                          1           2265.84    0.446361 │
+│ objective_2b6f2_00005   TERMINATED                    0.007                    0.08    True                    False                 False                    True                          1           1717.83    0.424794 │
+│ objective_2b6f2_00006   TERMINATED                    0.005                    0.005   False                   True                  False                    False                         1           1344.81    0.429219 │
+│ objective_2b6f2_00008   PENDING                       0.02                     0.4     False                   False                 True                     False                                                         │
+│ objective_2b6f2_00009   PENDING                       0.001                    0.001   True                    False                 False                    True                                                          │
+│ objective_2b6f2_00010   PENDING                       0.5                      0.002   False                   False                 True                     True                                                          │
+│ objective_2b6f2_00011   PENDING                       0.5                      0.001   True                    False                 True                     False                                                         │
+│ objective_2b6f2_00012   PENDING                       0.007                    0.005   False                   False                 False                    True                                                          │
+│ objective_2b6f2_00013   PENDING                       0.6                      0.06    True                    False                 True                     False                                                         │
+│ objective_2b6f2_00014   PENDING                       0.05                     0.07    False                   False                 False                    True                                                          │
+│ objective_2b6f2_00015   PENDING                       0.002                    0.1     True                    False                 False                    False                                                         │
+│ objective_2b6f2_00016   PENDING                       0.8                      0.3     False                   False                 True                     False                                                         │
+│ objective_2b6f2_00017   PENDING                       0.007                    0.01    True                    False                 False                    True                                                          │
+│ objective_2b6f2_00018   PENDING                       0.001                    0.06    True                    True                  True                     False                                                         │
+│ objective_2b6f2_00019   PENDING                       0.03                     0.05    True                    True                  True                     True                                                          │
+?─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────?
+(raylet) [2024-06-04 15:57:17,758 E 646111 646134] (raylet) file_system_monitor.cc:111: /tmp/ray/session_2024-06-04_12-44-40_034956_645818 is over 95% full, available space: 35120545792; capacity: 1887901937664. Object creation will fail if spilling is required.
+
+
+│ objective_2b6f2_00004   TERMINATED                    0.6                      0.004   True                    False                 True                     True                          1           2265.84    0.446361 │

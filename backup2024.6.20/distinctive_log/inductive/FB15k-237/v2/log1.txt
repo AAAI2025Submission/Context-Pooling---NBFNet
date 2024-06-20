@@ -1,0 +1,32 @@
+(raylet) [2024-06-04 22:22:49,662 E 738335 738357] (raylet) file_system_monitor.cc:111: /tmp/ray/session_2024-06-04_16-25-51_243216_738023 is over 95% full, available space: 30673170432; capacity: 1887901937664. Object creation will fail if spilling is required.
+^C2024-06-04 22:22:56,769       WARNING tune.py:194 -- Stop signal received (e.g. via SIGINT/Ctrl+C), ending Ray Tune run. This will try to checkpoint the experiment state one last time. Press CTRL+C (or send SIGINT/SIGKILL/SIGTERM) to skip.
+Trial status: 5 TERMINATED | 1 RUNNING | 14 PENDING
+Current time: 2024-06-04 22:22:56. Total running time: 5hr 56min 58s
+Logical resource usage: 10.0/40 CPUs, 1.0/1 GPUs (0.0/1.0 accelerator_type:V100)
+╭─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Trial name              status         ...ccuracy_threshold     ....recall_threshold   opts.accuracy_graph     opts.recall_graph     ..._graph_complement     ..._graph_complement       iter     total time (s)        mrr │
+├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ objective_11844_00005   RUNNING                       0.007                    0.08    True                    False                 False                    True                                                          │
+│ objective_11844_00000   TERMINATED                    0.002                    0.2     True                    False                 False                    False                         1            2860.5    0.475165 │
+│ objective_11844_00001   TERMINATED                    0.001                    0.06    True                    False                 True                     True                          1            5810.75   0.478302 │
+│ objective_11844_00002   TERMINATED                    0.008                    0.04    False                   False                 False                    False                         1            1411.37   0.330381 │
+│ objective_11844_00003   TERMINATED                    0.003                    0.4     False                   False                 True                     False                         1            3049.29   0.482586 │
+│ objective_11844_00004   TERMINATED                    0.6                      0.004   True                    False                 True                     True                          1            5742.7    0.496157 │
+│ objective_11844_00006   PENDING                       0.005                    0.005   False                   True                  False                    False                                                         │
+│ objective_11844_00007   PENDING                       0.01                     0.8     True                    True                  True                     False                                                         │
+│ objective_11844_00008   PENDING                       0.02                     0.4     False                   False                 True                     False                                                         │
+│ objective_11844_00009   PENDING                       0.001                    0.001   True                    False                 False                    True                                                          │
+│ objective_11844_00010   PENDING                       0.5                      0.002   False                   False                 True                     True                                                          │
+│ objective_11844_00011   PENDING                       0.5                      0.001   True                    False                 True                     False                                                         │
+│ objective_11844_00012   PENDING                       0.007                    0.005   False                   False                 False                    True                                                          │
+│ objective_11844_00013   PENDING                       0.6                      0.06    True                    False                 True                     False                                                         │
+│ objective_11844_00014   PENDING                       0.05                     0.07    False                   False                 False                    True                                                          │
+│ objective_11844_00015   PENDING                       0.002                    0.1     True                    False                 False                    False                                                         │
+│ objective_11844_00016   PENDING                       0.8                      0.3     False                   False                 True                     False                                                         │
+│ objective_11844_00017   PENDING                       0.007                    0.01    True                    False                 False                    True                                                          │
+│ objective_11844_00018   PENDING                       0.001                    0.06    True                    True                  True                     False                                                         │
+│ objective_11844_00019   PENDING                       0.03                     0.05    True                    True                  True                     True                                                          │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+
+│ objective_11844_00004   TERMINATED                    0.6                      0.004   True                    False                 True                     True                          1            5742.7    0.496157 │

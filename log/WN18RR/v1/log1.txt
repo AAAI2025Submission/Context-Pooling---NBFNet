@@ -1,0 +1,300 @@
+(py38) zhixiang@lily-gpu05:/media/hdd/zhixiang/pycharm/NBFNet$ pip install easydict
+Collecting easydict
+  Downloading easydict-1.13-py3-none-any.whl (6.8 kB)
+Installing collected packages: easydict
+Successfully installed easydict-1.13
+(py38) zhixiang@lily-gpu05:/media/hdd/zhixiang/pycharm/NBFNet$ pip install pyyaml
+Requirement already satisfied: pyyaml in /home/zhixiang/miniconda3/envs/py38/lib/python3.8/site-packages (6.0)
+(py38) zhixiang@lily-gpu05:/media/hdd/zhixiang/pycharm/NBFNet$ python script/run.py -c config/inductive/wn18rr.yaml --gpus [0] --version v1
+13:11:44   Random seed: 1024
+13:11:44   Config file: config/inductive/wn18rr.yaml
+13:11:44   {'dataset': {'class': 'IndWN18RR',
+             'root': '~/datasets/knowledge_graphs/',
+             'version': 'v1'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'NBFNet',
+           'dependent': False,
+           'hidden_dims': [32, 32, 32, 32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': '~/scratch/experiments/',
+ 'task': {'adversarial_temperature': 1,
+          'metric': ['mr', 'mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50'],
+          'num_negative': 32,
+          'strict_negative': True},
+ 'train': {'batch_size': 64, 'gpus': [0], 'log_interval': 100, 'num_epoch': 20}}
+Downloading https://raw.githubusercontent.com/kkteru/grail/master/data/WN18RR_v1_ind/train.txt
+Downloading https://raw.githubusercontent.com/kkteru/grail/master/data/WN18RR_v1_ind/test.txt
+Downloading https://raw.githubusercontent.com/kkteru/grail/master/data/WN18RR_v1/train.txt
+Downloading https://raw.githubusercontent.com/kkteru/grail/master/data/WN18RR_v1/valid.txt
+Processing...
+Done!
+13:11:46   IndWN18RR dataset
+13:11:46   #train: 5410, #valid: 630, #test: 188
+13:11:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:11:50   Epoch 0 begin
+Load rspmm extension. This may take a while...
+13:14:48   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:14:48   binary cross entropy: 0.692705
+13:15:05   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:15:05   Epoch 0 end
+13:15:05   ------------------------------
+13:15:05   average binary cross entropy: 0.421293
+13:15:05   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:15:05   Epoch 1 begin
+13:15:07   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:15:08   binary cross entropy: 0.3674
+13:15:24   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:15:24   Epoch 1 end
+13:15:24   ------------------------------
+13:15:24   average binary cross entropy: 0.383836
+13:15:24   Save checkpoint to model_epoch_2.pth
+13:15:24   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:15:24   Evaluate on valid
+/home/zhixiang/miniconda3/envs/py38/lib/python3.8/site-packages/torch/functional.py:504: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /opt/conda/conda-bld/pytorch_1670525552411/work/aten/src/ATen/native/TensorShape.cpp:3190.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+13:15:25   mr: 155.763
+13:15:25   mrr: 0.526658
+13:15:25   hits@1: 0.453175
+13:15:25   hits@3: 0.571429
+13:15:25   hits@10: 0.642857
+13:15:25   hits@10_50: 0.893912
+13:15:25   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:15:25   Epoch 2 begin
+13:15:31   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:15:31   binary cross entropy: 0.408003
+13:15:42   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:15:42   Epoch 2 end
+13:15:42   ------------------------------
+13:15:42   average binary cross entropy: 0.371786
+13:15:42   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:15:42   Epoch 3 begin
+13:15:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:15:50   binary cross entropy: 0.454532
+13:15:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:15:58   Epoch 3 end
+13:15:58   ------------------------------
+13:15:58   average binary cross entropy: 0.366479
+13:15:58   Save checkpoint to model_epoch_4.pth
+13:15:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:15:58   Evaluate on valid
+13:15:59   mr: 144.576
+13:15:59   mrr: 0.539948
+13:15:59   hits@1: 0.457937
+13:15:59   hits@3: 0.598413
+13:15:59   hits@10: 0.66746
+13:15:59   hits@10_50: 0.900954
+13:15:59   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:15:59   Epoch 4 begin
+13:16:11   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:16:11   binary cross entropy: 0.387049
+13:16:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:16:16   Epoch 4 end
+13:16:16   ------------------------------
+13:16:16   average binary cross entropy: 0.363956
+13:16:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:16:16   Epoch 5 begin
+13:16:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:16:30   binary cross entropy: 0.377415
+13:16:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:16:32   Epoch 5 end
+13:16:32   ------------------------------
+13:16:32   average binary cross entropy: 0.361969
+13:16:32   Save checkpoint to model_epoch_6.pth
+13:16:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:16:32   Evaluate on valid
+13:16:33   mr: 126.608
+13:16:33   mrr: 0.544592
+13:16:33   hits@1: 0.462698
+13:16:33   hits@3: 0.600794
+13:16:33   hits@10: 0.677778
+13:16:33   hits@10_50: 0.912201
+13:16:33   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:16:33   Epoch 6 begin
+13:16:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:16:50   Epoch 6 end
+13:16:50   ------------------------------
+13:16:50   average binary cross entropy: 0.355661
+13:16:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:16:50   Epoch 7 begin
+13:16:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:16:51   binary cross entropy: 0.283994
+13:17:06   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:17:06   Epoch 7 end
+13:17:06   ------------------------------
+13:17:06   average binary cross entropy: 0.358
+13:17:06   Save checkpoint to model_epoch_8.pth
+13:17:06   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:17:06   Evaluate on valid
+13:17:08   mr: 123.656
+13:17:08   mrr: 0.548424
+13:17:08   hits@1: 0.466667
+13:17:08   hits@3: 0.606349
+13:17:08   hits@10: 0.68254
+13:17:08   hits@10_50: 0.914043
+13:17:08   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:17:08   Epoch 8 begin
+13:17:12   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:17:12   binary cross entropy: 0.365356
+13:17:24   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:17:24   Epoch 8 end
+13:17:24   ------------------------------
+13:17:24   average binary cross entropy: 0.35185
+13:17:24   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:17:24   Epoch 9 begin
+13:17:31   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:17:31   binary cross entropy: 0.374855
+13:17:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:17:40   Epoch 9 end
+13:17:40   ------------------------------
+13:17:40   average binary cross entropy: 0.353865
+13:17:40   Save checkpoint to model_epoch_10.pth
+13:17:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:17:40   Evaluate on valid
+13:17:42   mr: 132.585
+13:17:42   mrr: 0.552975
+13:17:42   hits@1: 0.474603
+13:17:42   hits@3: 0.607143
+13:17:42   hits@10: 0.679365
+13:17:42   hits@10_50: 0.911412
+13:17:42   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:17:42   Epoch 10 begin
+13:17:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:17:51   binary cross entropy: 0.321642
+13:17:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:17:58   Epoch 10 end
+13:17:58   ------------------------------
+13:17:58   average binary cross entropy: 0.351309
+13:17:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:17:58   Epoch 11 begin
+13:18:10   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:18:10   binary cross entropy: 0.351468
+13:18:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:18:14   Epoch 11 end
+13:18:14   ------------------------------
+13:18:14   average binary cross entropy: 0.352532
+13:18:14   Save checkpoint to model_epoch_12.pth
+13:18:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:18:14   Evaluate on valid
+13:18:16   mr: 117.781
+13:18:16   mrr: 0.552029
+13:18:16   hits@1: 0.473016
+13:18:16   hits@3: 0.601587
+13:18:16   hits@10: 0.681746
+13:18:16   hits@10_50: 0.917538
+13:18:16   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:18:16   Epoch 12 begin
+13:18:31   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:18:31   binary cross entropy: 0.361767
+13:18:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:18:32   Epoch 12 end
+13:18:32   ------------------------------
+13:18:32   average binary cross entropy: 0.346264
+13:18:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:18:32   Epoch 13 begin
+13:18:48   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:18:48   Epoch 13 end
+13:18:48   ------------------------------
+13:18:48   average binary cross entropy: 0.345904
+13:18:48   Save checkpoint to model_epoch_14.pth
+13:18:48   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:18:48   Evaluate on valid
+13:18:50   mr: 121.152
+13:18:50   mrr: 0.549436
+13:18:50   hits@1: 0.470635
+13:18:50   hits@3: 0.601587
+13:18:50   hits@10: 0.68254
+13:18:50   hits@10_50: 0.916175
+13:18:50   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:18:50   Epoch 14 begin
+13:18:52   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:18:52   binary cross entropy: 0.373777
+13:19:06   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:19:06   Epoch 14 end
+13:19:06   ------------------------------
+13:19:06   average binary cross entropy: 0.349155
+13:19:06   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:19:06   Epoch 15 begin
+13:19:11   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:19:11   binary cross entropy: 0.292632
+13:19:22   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:19:22   Epoch 15 end
+13:19:22   ------------------------------
+13:19:22   average binary cross entropy: 0.343686
+13:19:22   Save checkpoint to model_epoch_16.pth
+13:19:22   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:19:22   Evaluate on valid
+13:19:24   mr: 122.098
+13:19:24   mrr: 0.553657
+13:19:24   hits@1: 0.474603
+13:19:24   hits@3: 0.60873
+13:19:24   hits@10: 0.679365
+13:19:24   hits@10_50: 0.918561
+13:19:24   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:19:24   Epoch 16 begin
+13:19:31   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:19:32   binary cross entropy: 0.31249
+13:19:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:19:40   Epoch 16 end
+13:19:40   ------------------------------
+13:19:40   average binary cross entropy: 0.344128
+13:19:40   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:19:40   Epoch 17 begin
+13:19:51   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:19:51   binary cross entropy: 0.400609
+13:19:56   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:19:56   Epoch 17 end
+13:19:56   ------------------------------
+13:19:56   average binary cross entropy: 0.344329
+13:19:56   Save checkpoint to model_epoch_18.pth
+13:19:56   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:19:56   Evaluate on valid
+13:19:58   mr: 124.225
+13:19:58   mrr: 0.551402
+13:19:58   hits@1: 0.470635
+13:19:58   hits@3: 0.609524
+13:19:58   hits@10: 0.680952
+13:19:58   hits@10_50: 0.914629
+13:19:58   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:19:58   Epoch 18 begin
+13:20:11   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:20:11   binary cross entropy: 0.308058
+13:20:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:20:14   Epoch 18 end
+13:20:14   ------------------------------
+13:20:14   average binary cross entropy: 0.339822
+13:20:14   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:20:14   Epoch 19 begin
+13:20:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:20:30   Epoch 19 end
+13:20:30   ------------------------------
+13:20:30   average binary cross entropy: 0.342842
+13:20:30   Save checkpoint to model_epoch_20.pth
+13:20:30   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:20:30   Evaluate on valid
+13:20:32   mr: 119.938
+13:20:32   mrr: 0.554521
+13:20:32   hits@1: 0.472222
+13:20:32   hits@3: 0.611111
+13:20:32   hits@10: 0.687302
+13:20:32   hits@10_50: 0.917337
+13:20:32   Load checkpoint from model_epoch_20.pth
+13:20:32   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:20:32   Evaluate on valid
+13:20:33   mr: 119.938
+13:20:33   mrr: 0.554521
+13:20:33   hits@1: 0.472222
+13:20:33   hits@3: 0.611111
+13:20:33   hits@10: 0.687302
+13:20:33   hits@10_50: 0.917337
+13:20:33   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+13:20:33   Evaluate on test
+13:20:34   mr: 27.7394
+13:20:34   mrr: 0.701774
+13:20:34   hits@1: 0.614362
+13:20:34   hits@3: 0.776596
+13:20:34   hits@10: 0.827128
+13:20:34   hits@10_50: 0.951034
