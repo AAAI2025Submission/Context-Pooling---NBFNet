@@ -98,9 +98,7 @@ def train_and_validate(cfg, model, train_data, valid_data, filtered_data=None):
                 "model": model.state_dict(),
                 "optimizer": optimizer.state_dict()
             }
-            if not os.path.exists("save"):
-                os.makedirs("save")
-            torch.save(state, "save/model_epoch_%d.pth" % epoch)
+            torch.save(state, "model_epoch_%d.pth" % epoch)
         util.synchronize()
 
         if rank == 0:
@@ -114,7 +112,7 @@ def train_and_validate(cfg, model, train_data, valid_data, filtered_data=None):
     if rank == 0:
         logger.warning("Load checkpoint from model_epoch_%d.pth" % best_epoch)
 
-    state = torch.load("save/model_epoch_%d.pth" % best_epoch, map_location=device)
+    state = torch.load("model_epoch_%d.pth" % best_epoch, map_location=device)
     model.load_state_dict(state["model"])
     util.synchronize()
 
@@ -195,6 +193,15 @@ def test(cfg, model, test_data, filtered_data=None):
 
 def objective(config):
     cfg=EasyDict(config['cfg'])
+
+    # if config['tuning']:
+    #     cfg.optimizer.lr=config['cfg.optimizer.lr']
+    #
+    #     cfg.model.short_cut=config['cfg.model.short_cut']
+    #     cfg.model.layer_norm=config['cfg.model.layer_norm']
+    #     cfg.model.dependent=config['cfg.model.dependent']
+    #     cfg.model.remove_one_hop=config['cfg.model.remove_one_hop']
+
     args=config['args']
     vars=config['vars']
     device = config['device']
@@ -202,9 +209,10 @@ def objective(config):
         logger.warning("Random seed: %d" % args.seed)
         logger.warning("Config file: %s" % args.config)
         logger.warning(pprint.pformat(cfg))
-    is_inductive = cfg.dataset["class"].startswith("Ind")
     dataset = util.build_distinctive_dataset(cfg,device,config['opts.accuracy_threshold'],config['opts.recall_threshold'])
     cfg.model.num_relation = dataset.num_relations
+    cfg.accuracy_tensor=dataset.accuracy_tensor
+    cfg.recall_tensor=dataset.recall_tensor
     model = util.build_model(graphs=[config['opts.accuracy_graph'],config['opts.recall_graph'],config['opts.accuracy_graph_complement'],config['opts.recall_graph_complement']],cfg=cfg)
 
 

@@ -12,12 +12,12 @@ export CUDA_LAUNCH_BLOCKING=1
 
 export CUBLAS_WORKSPACE_CONFIG=:16:8
 export PYTHONUNBUFFERED=1
-python script/run.py -c config/transductive/wn18rr.yaml --gpus [0] --version v1 \
+python script/run.py -c config/inductive/fb15k237.yaml --gpus [0] --version v1 \
 --accuracy_threshold 0.37 \
 --recall_threshold 0.23 \
 --accuracy_graph False \
---recall_graph True \
+--recall_graph False \
 --accuracy_graph_complement False \
---recall_graph_complement False \
+--recall_graph_complement False
 
 

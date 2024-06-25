@@ -10,4 +10,4 @@
 
 export CUBLAS_WORKSPACE_CONFIG=:16:8
 export PYTHONUNBUFFERED=1
-python script/tuning.py -c config/transductive/fb15k237.yaml --gpus [0] --version v2
+python script/tuning.py -c config/inductive/fb15k237.yaml --gpus [0] --version v1

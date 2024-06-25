@@ -61,51 +61,52 @@ class GeneralizedRelationalConv(MessagePassing):
         if edge_weight is None:
             edge_weight = torch.ones(len(edge_type), device=input.device)
 
-
-
-        # note that we send the initial boundary condition (node states at layer0) to the message passing
-        # correspond to Eq.6 on p5 in https://arxiv.org/pdf/2106.06935.pdf
         output = self.propagate(input=input, relation=relation, boundary=boundary, edge_index=edge_index,
                                 edge_type=edge_type, size=size, edge_weight=edge_weight)
-
-
+        # output=[]
+        # for i in range(batch_size):
+        #     o = self.propagate(input=input[i,None], relation=relation[i,None], boundary=boundary[i,None], edge_index=edge_index,
+        #                             edge_type=edge_type, size=size, edge_weight=edge_weight)
+        #     output.append(o)
+        # output=torch.cat(output,dim=0)
         return output
 
     def propagate(self, edge_index, size=None, **kwargs):
-        if kwargs["edge_weight"].requires_grad or self.message_func == "rotate":
-            # the rspmm cuda kernel only works for TransE and DistMult message functions
-            # otherwise we invoke separate message & aggregate functions
-            return super(GeneralizedRelationalConv, self).propagate(edge_index, size, **kwargs)
-
-        for hook in self._propagate_forward_pre_hooks.values():
-            res = hook(self, (edge_index, size, kwargs))
-            if res is not None:
-                edge_index, size, kwargs = res
-
-        size = self.__check_input__(edge_index, size)
-        coll_dict = self.__collect__(self.__fused_user_args__, edge_index,
-                                     size, kwargs)
-
-        msg_aggr_kwargs = self.inspector.distribute("message_and_aggregate", coll_dict)
-        for hook in self._message_and_aggregate_forward_pre_hooks.values():
-            res = hook(self, (edge_index, msg_aggr_kwargs))
-            if res is not None:
-                edge_index, msg_aggr_kwargs = res
-        out = self.message_and_aggregate(edge_index, **msg_aggr_kwargs)
-        for hook in self._message_and_aggregate_forward_hooks.values():
-            res = hook(self, (edge_index, msg_aggr_kwargs), out)
-            if res is not None:
-                out = res
-
-        update_kwargs = self.inspector.distribute("update", coll_dict)
-        out = self.update(out, **update_kwargs)
-
-        for hook in self._propagate_forward_hooks.values():
-            res = hook(self, (edge_index, size, kwargs), out)
-            if res is not None:
-                out = res
-
-        return out
+        return super(GeneralizedRelationalConv, self).propagate(edge_index, size, **kwargs)
+        # if kwargs["edge_weight"].requires_grad or self.message_func == "rotate":
+        #     # the rspmm cuda kernel only works for TransE and DistMult message functions
+        #     # otherwise we invoke separate message & aggregate functions
+        #     return super(GeneralizedRelationalConv, self).propagate(edge_index, size, **kwargs)
+        #
+        # for hook in self._propagate_forward_pre_hooks.values():
+        #     res = hook(self, (edge_index, size, kwargs))
+        #     if res is not None:
+        #         edge_index, size, kwargs = res
+        #
+        # size = self.__check_input__(edge_index, size)
+        # coll_dict = self.__collect__(self.__fused_user_args__, edge_index,
+        #                              size, kwargs)
+        #
+        # msg_aggr_kwargs = self.inspector.distribute("message_and_aggregate", coll_dict)
+        # for hook in self._message_and_aggregate_forward_pre_hooks.values():
+        #     res = hook(self, (edge_index, msg_aggr_kwargs))
+        #     if res is not None:
+        #         edge_index, msg_aggr_kwargs = res
+        # out = self.message_and_aggregate(edge_index, **msg_aggr_kwargs)
+        # for hook in self._message_and_aggregate_forward_hooks.values():
+        #     res = hook(self, (edge_index, msg_aggr_kwargs), out)
+        #     if res is not None:
+        #         out = res
+        #
+        # update_kwargs = self.inspector.distribute("update", coll_dict)
+        # out = self.update(out, **update_kwargs)
+        #
+        # for hook in self._propagate_forward_hooks.values():
+        #     res = hook(self, (edge_index, size, kwargs), out)
+        #     if res is not None:
+        #         out = res
+        #
+        # return out
 
     def message(self, input_j, relation, boundary, edge_type):
         relation_j = relation.index_select(self.node_dim, edge_type)
@@ -146,7 +147,7 @@ class GeneralizedRelationalConv(MessagePassing):
             features = features.flatten(-2)
             degree_out = degree(index, dim_size).unsqueeze(0).unsqueeze(-1)
             scale = degree_out.log()
-            scale = scale / scale.mean()
+            scale = scale / scale.mean() if scale.mean() > 0 else scale
             scales = torch.cat([torch.ones_like(scale), scale, 1 / scale.clamp(min=1e-2)], dim=-1)
             output = (features.unsqueeze(-1) * scales.unsqueeze(-2)).flatten(-2)
         else:
@@ -196,7 +197,7 @@ class GeneralizedRelationalConv(MessagePassing):
             features = torch.cat([mean.unsqueeze(-1), max.unsqueeze(-1), min.unsqueeze(-1), std.unsqueeze(-1)], dim=-1)
             features = features.flatten(-2) # (node, batch_size * input_dim * 4)
             scale = degree_out.log()
-            scale = scale / scale.mean()
+            scale = scale / scale.mean() if scale.mean() > 0 else scale
             scales = torch.cat([torch.ones_like(scale), scale, 1 / scale.clamp(min=1e-2)], dim=-1) # (node, 3)
             update = (features.unsqueeze(-1) * scales.unsqueeze(-2)).flatten(-2) # (node, batch_size * input_dim * 4 * 3)
         else:
@@ -213,3 +214,79 @@ class GeneralizedRelationalConv(MessagePassing):
         if self.activation:
             output = self.activation(output)
         return output
+
+
+class DistinctiveGeneralizedRelationalConv(GeneralizedRelationalConv):
+    def __init__(self, input_dim, output_dim, num_relation, query_input_dim, message_func="distmult",
+                 aggregate_func="pna", layer_norm=False, activation="relu", dependent=True,unmasked_tensor=None):
+        super(DistinctiveGeneralizedRelationalConv, self).__init__(input_dim, output_dim, num_relation, query_input_dim, message_func,
+                 aggregate_func, layer_norm, activation, dependent)
+        self.unmasked_tensor=unmasked_tensor
+    def forward(self, input, query, boundary, edge_index, edge_type, size, edge_weight=None,query_relations=None):
+        batch_size = len(query)
+
+
+        if self.dependent:
+            # layer-specific relation features as a projection of input "query" (relation) embeddings
+            relation = self.relation_linear(query).view(batch_size, self.num_relation, self.input_dim)
+        else:
+            # layer-specific relation features as a special embedding matrix unique to each layer
+            relation = self.relation.weight.expand(batch_size, -1, -1)
+        if edge_weight is None:
+            edge_weight = torch.ones(len(edge_type), device=input.device)
+
+        output=[]
+        next_query_relations=[]
+        num_relations=self.unmasked_tensor.shape[0]
+        unmasked_idxs = []
+
+        for i in range(batch_size):
+            ur = self.unmasked_tensor[query_relations[i]]
+            ur=torch.sum(ur,dim=0)>0
+
+            nqr=(torch.nonzero(ur).view(-1)+int(num_relations/2)) % num_relations
+            uidxs = ur[edge_type]
+            unmasked_idxs.append(uidxs)
+            next_query_relations.append(nqr)
+
+        output = self.propagate(input=input, relation=relation, boundary=boundary, edge_index=edge_index,
+                                edge_type=edge_type, size=size, edge_weight=edge_weight,unmasked_idxs=unmasked_idxs)
+
+
+        # for i in range(batch_size):
+        #     unmasked_relations = self.unmasked_tensor[query_relations[i]]
+        #     unmasked_relations=torch.sum(unmasked_relations,dim=0)>0
+        #
+        #     nqr=(torch.nonzero(unmasked_relations).view(-1)+int(num_relations/2)) % num_relations
+        #     unmasked_idxs = unmasked_relations[edge_type]
+        #     o = self.propagate(input=input[i,None], relation=relation[i,None], boundary=boundary[i,None], edge_index=edge_index[:,unmasked_idxs],
+        #                             edge_type=edge_type[unmasked_idxs], size=size, edge_weight=edge_weight[unmasked_idxs])
+        #     output.append(o)
+        #     next_query_relations.append(nqr)
+        # output=torch.cat(output,dim=0)
+        return output,next_query_relations
+
+
+    def message(self, input_j, relation, boundary, edge_type,unmasked_idxs):
+        relation_j = relation.index_select(self.node_dim, edge_type)
+
+        if self.message_func == "transe":
+            message = input_j + relation_j
+        elif self.message_func == "distmult":
+            message = input_j * relation_j
+        elif self.message_func == "rotate":
+            x_j_re, x_j_im = input_j.chunk(2, dim=-1)
+            r_j_re, r_j_im = relation_j.chunk(2, dim=-1)
+            message_re = x_j_re * r_j_re - x_j_im * r_j_im
+            message_im = x_j_re * r_j_im + x_j_im * r_j_re
+            message = torch.cat([message_re, message_im], dim=-1)
+        else:
+            raise ValueError("Unknown message function `%s`" % self.message_func)
+
+        for i in range(len(unmasked_idxs)):
+            idx=unmasked_idxs[i]
+            message[i][idx==False,:]=0
+        message= torch.cat([message, boundary], dim=self.node_dim)  # (num_edges + num_nodes, batch_size, input_dim)
+
+
+        return message

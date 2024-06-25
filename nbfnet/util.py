@@ -220,7 +220,7 @@ def build_model(cfg,graphs):
     if cls == "NBFNet":
         model = models.NBFNet(**cfg.model)
     elif cls == "DistinctiveNBFNet":
-        model = models.DistinctiveNBFNet(graphs=graphs,**cfg.model)
+        model = models.DistinctiveNBFNet(graphs=graphs,**cfg.model,accuracy_tensor=cfg.accuracy_tensor,recall_tensor=cfg.recall_tensor)
     else:
         raise ValueError("Unknown model `%s`" % cls)
     if "checkpoint" in cfg:

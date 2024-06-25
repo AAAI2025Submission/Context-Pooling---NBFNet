@@ -98,6 +98,7 @@ class NBFNet(nn.Module):
 
         hiddens = []
         edge_weights = []
+        layer_input = boundary
 
 
         for layer in self.layers:
@@ -335,44 +336,45 @@ def scatter_topk(input, size, k, largest=True):
     return value, index
 
 class DistinctiveNBFNet(NBFNet):
-    def __init__(self,graphs, input_dim, hidden_dims, num_relation, message_func="distmult", aggregate_func="pna",
+    def __init__(self,graphs,accuracy_tensor,recall_tensor, input_dim, hidden_dims, num_relation, message_func="distmult", aggregate_func="pna",
                  short_cut=False, layer_norm=False, activation="relu", concat_hidden=False, num_mlp_layer=2,
                  dependent=True, remove_one_hop=False, num_beam=10, path_topk=10):
-        super().__init__(input_dim, hidden_dims, num_relation, message_func="distmult", aggregate_func="pna",
-                 short_cut=False, layer_norm=False, activation="relu", concat_hidden=False, num_mlp_layer=2,
-                 dependent=True, remove_one_hop=False, num_beam=10, path_topk=10)
+        super().__init__(input_dim, hidden_dims, num_relation, message_func, aggregate_func,
+                 short_cut, layer_norm, activation, concat_hidden, num_mlp_layer,
+                 dependent, remove_one_hop, num_beam, path_topk)
         self.graphs=graphs
         self.graph_num=np.sum(np.array(self.graphs))+1
+        self.accuracy_tensor=accuracy_tensor
+        self.recall_tensor=recall_tensor
         if graphs[0]:
             self.accuracy_layers = nn.ModuleList()
             for i in range(len(self.dims) - 1):
-                self.accuracy_layers.append(layers.GeneralizedRelationalConv(self.dims[i], self.dims[i + 1], num_relation,
+                self.accuracy_layers.append(layers.DistinctiveGeneralizedRelationalConv(self.dims[i], self.dims[i + 1], num_relation,
                                                                     self.dims[0], message_func, aggregate_func, layer_norm,
-                                                                    activation, dependent))
+                                                                    activation, dependent,unmasked_tensor=self.accuracy_tensor))
         if graphs[1]:
             self.recall_layers = nn.ModuleList()
             for i in range(len(self.dims) - 1):
-                self.recall_layers.append(layers.GeneralizedRelationalConv(self.dims[i], self.dims[i + 1], num_relation,
+                self.recall_layers.append(layers.DistinctiveGeneralizedRelationalConv(self.dims[i], self.dims[i + 1], num_relation,
                                                                     self.dims[0], message_func, aggregate_func, layer_norm,
-                                                                    activation, dependent))
+                                                                    activation, dependent,unmasked_tensor=self.recall_tensor))
         if graphs[2]:
             self.accuracy_complement_layers = nn.ModuleList()
             for i in range(len(self.dims) - 1):
-                self.accuracy_complement_layers.append(layers.GeneralizedRelationalConv(self.dims[i], self.dims[i + 1], num_relation,
+                self.accuracy_complement_layers.append(layers.DistinctiveGeneralizedRelationalConv(self.dims[i], self.dims[i + 1], num_relation,
                                                                     self.dims[0], message_func, aggregate_func, layer_norm,
-                                                                    activation, dependent))
+                                                                    activation, dependent,unmasked_tensor=~self.accuracy_tensor))
         if graphs[3]:
             self.recall_complement_layers = nn.ModuleList()
             for i in range(len(self.dims) - 1):
-                self.recall_complement_layers.append(layers.GeneralizedRelationalConv(self.dims[i], self.dims[i + 1], num_relation,
+                self.recall_complement_layers.append(layers.DistinctiveGeneralizedRelationalConv(self.dims[i], self.dims[i + 1], num_relation,
                                                                     self.dims[0], message_func, aggregate_func, layer_norm,
-                                                                    activation, dependent))
-        self.gate=nn.GRU(hidden_dims[-1]*self.graph_num,hidden_dims[-1])
+                                                                    activation, dependent,unmasked_tensor=~self.recall_tensor))
+        self.gate=nn.GRU(hidden_dims[-1]*self.graph_num,hidden_dims[-1],batch_first=True)
 
 
     def bellmanford(self, data, h_index, r_index, separate_grad=False):
         batch_size = len(r_index)
-
         # initialize queries (relation types of the given triples)
         query = self.query(r_index)
         index = h_index.unsqueeze(-1).expand_as(query)
@@ -388,60 +390,54 @@ class DistinctiveNBFNet(NBFNet):
 
         hiddens = []
         edge_weights = []
-        layer_input=[]
-
-        layer_input_all = boundary
-        layer_input.append(layer_input_all)
 
 
 
         if self.graphs[0]:
-            layer_input_accuracy = boundary
-            layer_input.append(layer_input_accuracy)
+            query_relations_accuracy = r_index.unsqueeze(1)
         if self.graphs[1]:
-            layer_input_recall = boundary
-            layer_input.append(layer_input_recall)
+            query_relations_recall = r_index.unsqueeze(1)
         if self.graphs[2]:
-            layer_input_accuracy_complement = boundary
-            layer_input.append(layer_input_accuracy_complement)
+            query_relations_accuracy_complement = r_index.unsqueeze(1)
         if self.graphs[3]:
-            layer_input_recall_complement = boundary
-            layer_input.append(layer_input_recall_complement)
+            query_relations_recall_complement = r_index.unsqueeze(1)
 
-        layer_input=torch.cat(layer_input,dim=-1)
+        layer_input=boundary
 
         for i in range(len(self.layers)):
             h = []
             if separate_grad:
                 edge_weight = edge_weight.clone().requires_grad_()
             # Bellman-Ford iteration, we send the original boundary condition in addition to the updated node states
-            hidden_all = self.layers[i](layer_input_all, query, boundary, data.edge_index, data.edge_type, size, edge_weight)
-            h.append(hidden_all)
+
             if self.graphs[0]:
-                hidden_accuracy = self.accuracy_layers[i](layer_input_accuracy, query, boundary, data.edge_index, data.edge_type, size, edge_weight)
+                hidden_accuracy,query_relations_accuracy = self.accuracy_layers[i](layer_input, query, boundary, data.edge_index, data.edge_type, size, edge_weight,query_relations=query_relations_accuracy)
                 h.append(hidden_accuracy)
-                layer_input_accuracy= hidden_accuracy
             if self.graphs[1]:
-                hidden_recall = self.recall_layers[i](layer_input_recall, query, boundary, data.edge_index, data.edge_type, size, edge_weight)
+                hidden_recall,query_relations_recall = self.recall_layers[i](layer_input, query, boundary, data.edge_index, data.edge_type, size, edge_weight,query_relations=query_relations_recall)
                 h.append(hidden_recall)
-                layer_input_recall= hidden_recall
             if self.graphs[2]:
-                hidden_accuracy_complement = self.accuracy_complement_layers[i](layer_input_accuracy_complement, query, boundary, data.edge_index, data.edge_type, size, edge_weight)
+                hidden_accuracy_complement,query_relations_accuracy_complement = self.accuracy_complement_layers[i](layer_input, query, boundary, data.edge_index, data.edge_type, size, edge_weight,query_relations=query_relations_accuracy_complement)
                 h.append(hidden_accuracy_complement)
-                layer_input_accuracy_complement= hidden_accuracy_complement
             if self.graphs[3]:
-                hidden_recall_complement = self.recall_complement_layers[i](layer_input_recall_complement, query, boundary, data.edge_index, data.edge_type, size, edge_weight)
+                hidden_recall_complement,query_relations_recall_complement = self.recall_complement_layers[i](layer_input, query, boundary, data.edge_index, data.edge_type, size, edge_weight,query_relations=query_relations_recall_complement)
                 h.append(hidden_recall_complement)
-                layer_input_recall_complement= hidden_recall_complement
+            hidden_all = self.layers[i](layer_input, query, boundary, data.edge_index, data.edge_type, size, edge_weight)
+            h.append(hidden_all)
             hidden=torch.cat(h,dim=-1)
+            hidden = self.gate(hidden)[0]
+
             if self.short_cut and hidden.shape == layer_input.shape:
                 # residual connection here
                 hidden = hidden + layer_input
+
+
             hiddens.append(hidden)
             edge_weights.append(edge_weight)
             layer_input = hidden
 
-        hiddens = [self.gate(hidden)[0] for hidden in hiddens]
+
+
          # (batch_size, num_nodes, input_dim)
         # original query (relation type) embeddings
         node_query = query.unsqueeze(1).expand(-1, data.num_nodes, -1)
@@ -449,7 +445,7 @@ class DistinctiveNBFNet(NBFNet):
             output = torch.cat(hiddens + [node_query], dim=-1)
         else:
             output = torch.cat([hiddens[-1], node_query], dim=-1)
-
+        edge_weights=torch.stack(edge_weights)
         return {
             "node_feature": output,
             "edge_weights": edge_weights,

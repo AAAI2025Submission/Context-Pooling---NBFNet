@@ -291,6 +291,7 @@ class DistinctiveIndRelLinkPredDataset(IndRelLinkPredDataset):
         assert name in ["FB15k-237", "WN18RR", "NELL-995"]
         assert version in ["v1", "v2", "v3", "v4"]
         super(IndRelLinkPredDataset,self).__init__(root, transform, pre_transform)
+        self.process()
         self.data_and_slices,self.accuracy_tensor,self.recall_tensor = torch.load(self.processed_paths[0],map_location=self.device)
         self.data,self.slices=self.data_and_slices
 
@@ -306,6 +307,7 @@ class DistinctiveIndRelLinkPredDataset(IndRelLinkPredDataset):
         inv_relation_vocab = {}
         triplets = []
         num_samples = []
+
 
         for txt_file in train_files:
             with open(txt_file, "r") as fin:
@@ -384,18 +386,9 @@ class DistinctiveIndRelLinkPredDataset(IndRelLinkPredDataset):
 
         torch.save((self.collate([train_data, valid_data, test_data]),accuracy_tensor,recall_tensor), self.processed_paths[0])
 
-    def inverse_relations(self,relations):
-        idd= relations == self.n_rel * 2
-        i_relation=(relations+(self.n_rel)) % (self.n_rel*2)
-        i_relation[idd]=self.n_rel * 2
-        return i_relation
 
     def generate_distinctive_neighbor(self, dir, save_dir, accuracy_threshold, recall_threshold):
 
-        head2relation = defaultdict(lambda: defaultdict(int))
-        tail2relation = defaultdict(lambda: defaultdict(int))
-        relation2head = defaultdict(lambda: defaultdict(int))
-        relation2tail = defaultdict(lambda: defaultdict(int))
 
         triplets = []
         relations = set()
@@ -410,15 +403,6 @@ class DistinctiveIndRelLinkPredDataset(IndRelLinkPredDataset):
                 relations.add(r)
                 relations.add(r + '_inv')
 
-                head2relation[h][r] += 1
-                tail2relation[t][r] += 1
-                relation2head[r][h] += 1
-                relation2tail[r][t] += 1
-
-                head2relation[t][r + '_inv'] += 1
-                tail2relation[h][r + '_inv'] += 1
-                relation2head[r + '_inv'][t] += 1
-                relation2tail[r + '_inv'][h] += 1
 
         relation2neighbors = defaultdict(lambda: defaultdict(int))
         all_neighbors = defaultdict(int)
@@ -466,8 +450,8 @@ class DistinctiveIndRelLinkPredDataset(IndRelLinkPredDataset):
                                                 sorted(relations) for r1 in accuracy_neighbors[r2]]).to(self.device)
         recall_tensor_indices = torch.tensor([[self.relation2id[r2], self.relation2id[r1]] for r2 in
                                               sorted(relations) for r1 in recall_neighbors[r2]]).to(self.device)
-        accuracy_tensor = torch.zeros([len(relations) + 1, len(relations) + 1], dtype=torch.bool).to(self.device)
-        recall_tensor = torch.zeros([len(relations) + 1, len(relations) + 1], dtype=torch.bool).to(self.device)
+        accuracy_tensor = torch.zeros([len(relations), len(relations)], dtype=torch.bool).to(self.device)
+        recall_tensor = torch.zeros([len(relations), len(relations)], dtype=torch.bool).to(self.device)
         if accuracy_tensor_indices.shape[0] > 0:
             accuracy_tensor[accuracy_tensor_indices[:, 0], accuracy_tensor_indices[:, 1]] = True
         if recall_tensor_indices.shape[0] > 0:
@@ -490,6 +474,7 @@ class DistinctiveTransRelLinkPredDataset(TransRelLinkPredDataset):
         assert name in ["FB15k-237", "WN18RR", "NELL-995"]
         assert version in ["v1", "v2", "v3", "v4"]
         super(TransRelLinkPredDataset,self).__init__(root, transform, pre_transform)
+        self.process()
         self.data_and_slices,self.accuracy_tensor,self.recall_tensor = torch.load(self.processed_paths[0],map_location=self.device)
         self.data,self.slices=self.data_and_slices
 
@@ -504,7 +489,6 @@ class DistinctiveTransRelLinkPredDataset(TransRelLinkPredDataset):
         inv_relation_vocab = {}
         triplets = []
         num_samples = []
-
         for txt_file in train_files:
             with open(txt_file, "r") as fin:
                 num_sample = 0
@@ -578,18 +562,9 @@ class DistinctiveTransRelLinkPredDataset(TransRelLinkPredDataset):
 
         torch.save((self.collate([train_data, valid_data, test_data]),accuracy_tensor,recall_tensor), self.processed_paths[0])
 
-    def inverse_relations(self,relations):
-        idd= relations == self.n_rel * 2
-        i_relation=(relations+(self.n_rel)) % (self.n_rel*2)
-        i_relation[idd]=self.n_rel * 2
-        return i_relation
 
     def generate_distinctive_neighbor(self, dir, save_dir, accuracy_threshold, recall_threshold):
 
-        head2relation = defaultdict(lambda: defaultdict(int))
-        tail2relation = defaultdict(lambda: defaultdict(int))
-        relation2head = defaultdict(lambda: defaultdict(int))
-        relation2tail = defaultdict(lambda: defaultdict(int))
 
         triplets = []
         relations = set()
@@ -604,15 +579,8 @@ class DistinctiveTransRelLinkPredDataset(TransRelLinkPredDataset):
                 relations.add(r)
                 relations.add(r + '_inv')
 
-                head2relation[h][r] += 1
-                tail2relation[t][r] += 1
-                relation2head[r][h] += 1
-                relation2tail[r][t] += 1
 
-                head2relation[t][r + '_inv'] += 1
-                tail2relation[h][r + '_inv'] += 1
-                relation2head[r + '_inv'][t] += 1
-                relation2tail[r + '_inv'][h] += 1
+
 
         relation2neighbors = defaultdict(lambda: defaultdict(int))
         all_neighbors = defaultdict(int)
@@ -660,8 +628,8 @@ class DistinctiveTransRelLinkPredDataset(TransRelLinkPredDataset):
                                                 sorted(relations) for r1 in accuracy_neighbors[r2]]).to(self.device)
         recall_tensor_indices = torch.tensor([[self.relation2id[r2], self.relation2id[r1]] for r2 in
                                               sorted(relations) for r1 in recall_neighbors[r2]]).to(self.device)
-        accuracy_tensor = torch.zeros([len(relations) + 1, len(relations) + 1], dtype=torch.bool).to(self.device)
-        recall_tensor = torch.zeros([len(relations) + 1, len(relations) + 1], dtype=torch.bool).to(self.device)
+        accuracy_tensor = torch.zeros([len(relations), len(relations)], dtype=torch.bool).to(self.device)
+        recall_tensor = torch.zeros([len(relations), len(relations)], dtype=torch.bool).to(self.device)
         if accuracy_tensor_indices.shape[0] > 0:
             accuracy_tensor[accuracy_tensor_indices[:, 0], accuracy_tensor_indices[:, 1]] = True
         if recall_tensor_indices.shape[0] > 0:

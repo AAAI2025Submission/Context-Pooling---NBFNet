@@ -27,16 +27,13 @@ if __name__ == "__main__":
 
     search_space = {
 
-        # 'opts.lr':tune.choice([1e-5 * i for i in range(1, 1000)]),
-        # 'opts.lamb':tune.choice([1e-4 * i for i in range(1, 100)]),
-        # 'opts.hidden_dim':tune.choice([32,64,96,128]),
-        # 'opts.dropout': tune.choice([0.01 * i for i in range(10,30)]),
-        # 'opts.decay_rate':tune.choice([1-i*0.0001 for i in range(0,51)]),
 
-        # 'opts.attn_dim':tune.choice([i for i in range(2,8)]),
-        # 'opts.act':tune.choice(['tanh','idd','relu']),
-        # 'opts.n_layer':tune.choice([i for i in range(2,6)]),
-        # 'opts.n_batch':tune.choice([i*5 for i in range(1,5)]),
+
+        # 'cfg.optimizer.lr': tune.choice([pow(10,-i) for i in range(1, 9)]),
+        # 'cfg.model.short_cut': tune.choice(['yes', 'no']),
+        # 'cfg.model.layer_norm': tune.choice(['yes', 'no']),
+        # 'cfg.model.dependent': tune.choice(['yes', 'no']),
+        # 'cfg.model.remove_one_hop': tune.choice(['yes', 'no']),
 
         'opts.accuracy_threshold': tune.choice([0.1*i for i in range(1,9)]+[0.01*i for i in range(1,9)]+[0.001*i for i in range(1,9)]),
         'opts.recall_threshold': tune.choice([0.1*i for i in range(1,9)]+[0.01*i for i in range(1,9)]+[0.001*i for i in range(1,9)]),
@@ -44,8 +41,9 @@ if __name__ == "__main__":
         'opts.recall_graph': tune.choice([True, False]),
         'opts.accuracy_graph_complement': tune.choice([True, False]),
         'opts.recall_graph_complement': tune.choice([True, False]),
+
+        'cfg': cfg,
         'tuning': True,
-        'cfg':cfg,
         'args': args,
         'vars': vars,
         'device': device,
