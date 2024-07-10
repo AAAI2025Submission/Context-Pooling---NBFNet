@@ -10,4 +10,5 @@
 
 export CUBLAS_WORKSPACE_CONFIG=:16:8
 export PYTHONUNBUFFERED=1
-python script/tuning.py -c config/inductive/fb15k237.yaml --gpus [0] --version v1
+export RAY_BACKEND_LOG_LEVEL=warning
+python script/tuning.py -c config/transductive/wn18rr.yaml --gpus [0] --version v3

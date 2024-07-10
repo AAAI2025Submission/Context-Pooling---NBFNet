@@ -51,10 +51,10 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="yaml configuration file", required=True)
     parser.add_argument("-s", "--seed", help="random seed for PyTorch", type=int, default=1024)
-    parser.add_argument( "--accuracy_threshold", help="accuracy threshold for Distinctive Pooling", type=float, default=0.5)
-    parser.add_argument( "--recall_threshold", help="recall threshold for Distinctive Pooling", type=float, default=0.5)
+    parser.add_argument( "--accuracy_threshold", help="accuracy threshold for Distinctive Pooling", type=float, default=0.001)
+    parser.add_argument( "--recall_threshold", help="recall threshold for Distinctive Pooling", type=float, default=0.06)
     parser.add_argument("--accuracy_graph", help="whether accuracy graph is enabled", type=bool, default=True)
-    parser.add_argument("--recall_graph", help="whether accuracy graph is enabled", type=bool, default=True)
+    parser.add_argument("--recall_graph", help="whether accuracy graph is enabled", type=bool, default=False)
     parser.add_argument("--accuracy_graph_complement", help="whether accuracy graph complement is enabled", type=bool, default=True)
     parser.add_argument("--recall_graph_complement", help="whether accuracy graph complement is enabled", type=bool, default=True)
 

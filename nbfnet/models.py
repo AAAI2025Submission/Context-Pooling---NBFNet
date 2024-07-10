@@ -150,6 +150,8 @@ class NBFNet(nn.Module):
         # probability logit for each tail node in the batch
         # (batch_size, num_negative + 1, dim) -> (batch_size, num_negative + 1)
         score = self.mlp(feature).squeeze(-1)
+        if torch.isnan(score).any().item():
+            raise ValueError("nan in score")
         return score.view(shape)
 
     def visualize(self, data, batch):
@@ -412,20 +414,32 @@ class DistinctiveNBFNet(NBFNet):
 
             if self.graphs[0]:
                 hidden_accuracy,query_relations_accuracy = self.accuracy_layers[i](layer_input, query, boundary, data.edge_index, data.edge_type, size, edge_weight,query_relations=query_relations_accuracy)
+                if torch.isnan(hidden_accuracy).any().item():
+                    raise ValueError("nan in hidden_accuracy")
                 h.append(hidden_accuracy)
             if self.graphs[1]:
                 hidden_recall,query_relations_recall = self.recall_layers[i](layer_input, query, boundary, data.edge_index, data.edge_type, size, edge_weight,query_relations=query_relations_recall)
+                if torch.isnan(hidden_recall).any().item():
+                    raise ValueError("nan in hidden_recall")
                 h.append(hidden_recall)
             if self.graphs[2]:
                 hidden_accuracy_complement,query_relations_accuracy_complement = self.accuracy_complement_layers[i](layer_input, query, boundary, data.edge_index, data.edge_type, size, edge_weight,query_relations=query_relations_accuracy_complement)
+                if torch.isnan(hidden_accuracy_complement).any().item():
+                    raise ValueError("nan in hidden_accuracy_complement")
                 h.append(hidden_accuracy_complement)
             if self.graphs[3]:
                 hidden_recall_complement,query_relations_recall_complement = self.recall_complement_layers[i](layer_input, query, boundary, data.edge_index, data.edge_type, size, edge_weight,query_relations=query_relations_recall_complement)
+                if torch.isnan(hidden_recall_complement).any().item():
+                    raise ValueError("nan in hidden_recall_complement")
                 h.append(hidden_recall_complement)
             hidden_all = self.layers[i](layer_input, query, boundary, data.edge_index, data.edge_type, size, edge_weight)
+            if torch.isnan(hidden_all).any().item():
+                raise ValueError("nan in hidden_all")
             h.append(hidden_all)
             hidden=torch.cat(h,dim=-1)
             hidden = self.gate(hidden)[0]
+            if torch.isnan(hidden).any().item():
+                raise ValueError("nan in hidden")
 
             if self.short_cut and hidden.shape == layer_input.shape:
                 # residual connection here
@@ -446,6 +460,8 @@ class DistinctiveNBFNet(NBFNet):
         else:
             output = torch.cat([hiddens[-1], node_query], dim=-1)
         edge_weights=torch.stack(edge_weights)
+        if torch.isnan(output).any().item():
+            raise ValueError("nan in output")
         return {
             "node_feature": output,
             "edge_weights": edge_weights,

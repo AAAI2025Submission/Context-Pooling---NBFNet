@@ -291,8 +291,8 @@ class DistinctiveIndRelLinkPredDataset(IndRelLinkPredDataset):
         assert name in ["FB15k-237", "WN18RR", "NELL-995"]
         assert version in ["v1", "v2", "v3", "v4"]
         super(IndRelLinkPredDataset,self).__init__(root, transform, pre_transform)
-        self.process()
-        self.data_and_slices,self.accuracy_tensor,self.recall_tensor = torch.load(self.processed_paths[0],map_location=self.device)
+        self.data_and_slices,self.accuracy_tensor,self.recall_tensor=self.process()
+        # self.data_and_slices,self.accuracy_tensor,self.recall_tensor = torch.load(self.processed_paths[0],map_location=self.device)
         self.data,self.slices=self.data_and_slices
 
     @property
@@ -385,7 +385,7 @@ class DistinctiveIndRelLinkPredDataset(IndRelLinkPredDataset):
             test_data = self.pre_transform(test_data)
 
         torch.save((self.collate([train_data, valid_data, test_data]),accuracy_tensor,recall_tensor), self.processed_paths[0])
-
+        return self.collate([train_data, valid_data, test_data]),accuracy_tensor,recall_tensor
 
     def generate_distinctive_neighbor(self, dir, save_dir, accuracy_threshold, recall_threshold):
 
@@ -474,8 +474,8 @@ class DistinctiveTransRelLinkPredDataset(TransRelLinkPredDataset):
         assert name in ["FB15k-237", "WN18RR", "NELL-995"]
         assert version in ["v1", "v2", "v3", "v4"]
         super(TransRelLinkPredDataset,self).__init__(root, transform, pre_transform)
-        self.process()
-        self.data_and_slices,self.accuracy_tensor,self.recall_tensor = torch.load(self.processed_paths[0],map_location=self.device)
+        self.data_and_slices,self.accuracy_tensor,self.recall_tensor=self.process()
+        # self.data_and_slices,self.accuracy_tensor,self.recall_tensor = torch.load(self.processed_paths[0],map_location=self.device)
         self.data,self.slices=self.data_and_slices
 
     @property
@@ -561,7 +561,7 @@ class DistinctiveTransRelLinkPredDataset(TransRelLinkPredDataset):
             test_data = self.pre_transform(test_data)
 
         torch.save((self.collate([train_data, valid_data, test_data]),accuracy_tensor,recall_tensor), self.processed_paths[0])
-
+        return self.collate([train_data, valid_data, test_data]),accuracy_tensor,recall_tensor
 
     def generate_distinctive_neighbor(self, dir, save_dir, accuracy_threshold, recall_threshold):
 

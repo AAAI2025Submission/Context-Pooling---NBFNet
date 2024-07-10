@@ -73,7 +73,6 @@ def train_and_validate(cfg, model, train_data, valid_data, filtered_data=None):
                     neg_weight[:, 1:] = 1 / cfg.task.num_negative
                 loss = (loss * neg_weight).sum(dim=-1) / neg_weight.sum(dim=-1)
                 loss = loss.mean()
-
                 loss.backward()
                 optimizer.step()
                 optimizer.zero_grad()
@@ -193,6 +192,8 @@ def test(cfg, model, test_data, filtered_data=None):
 
 def objective(config):
     cfg=EasyDict(config['cfg'])
+
+    assert 'cfg.optimizer.lr' not in config
 
     # if config['tuning']:
     #     cfg.optimizer.lr=config['cfg.optimizer.lr']
