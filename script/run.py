@@ -24,7 +24,9 @@ separator = ">" * 30
 line = "-" * 30
 
 logger = util.get_root_logger()
-
+def check_for_nan(grad):
+    if torch.isnan(grad).any():
+        raise ValueError("NaN detected in gradients")
 def train_and_validate(cfg, model, train_data, valid_data, filtered_data=None):
     if cfg.train.num_epoch == 0:
         return
@@ -44,6 +46,8 @@ def train_and_validate(cfg, model, train_data, valid_data, filtered_data=None):
     else:
         parallel_model = model
 
+    for param in parallel_model.parameters():
+        param.register_hook(check_for_nan)
     step = math.ceil(cfg.train.num_epoch / 10)
     best_mrr = float("-inf")
     best_epoch = -1
@@ -68,10 +72,10 @@ def train_and_validate(cfg, model, train_data, valid_data, filtered_data=None):
                 neg_weight = torch.ones_like(pred)
                 if cfg.task.adversarial_temperature > 0:
                     with torch.no_grad():
-                        neg_weight[:, 1:] = F.softmax(pred[:, 1:] / cfg.task.adversarial_temperature, dim=-1)
+                        neg_weight[:, 1:] = F.softmax(pred[:, 1:].clamp(min=1e-6) / cfg.task.adversarial_temperature, dim=-1)
                 else:
                     neg_weight[:, 1:] = 1 / cfg.task.num_negative
-                loss = (loss * neg_weight).sum(dim=-1) / neg_weight.sum(dim=-1)
+                loss = (loss * neg_weight).sum(dim=-1) / neg_weight.sum(dim=-1).clamp(min=1e-6)
                 loss = loss.mean()
                 loss.backward()
                 optimizer.step()

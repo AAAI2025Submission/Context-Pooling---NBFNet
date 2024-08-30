@@ -11,11 +11,10 @@ model:
   hidden_dims: [32, 32, 32, 32, 32, 32]
   message_func: distmult
   aggregate_func: pna
-  dependent: yes
-  layer_norm: no
-  remove_one_hop: yes
+  dependent: no
+  layer_norm: yes
+  remove_one_hop: no
   short_cut: yes
-
 task:
   num_negative: 32
   strict_negative: yes
@@ -24,8 +23,7 @@ task:
 
 optimizer:
   class: Adam
-  lr: 7.0e-3
-
+  lr: 0.005
 train:
   gpus: {{ gpus }}
   batch_size: 8

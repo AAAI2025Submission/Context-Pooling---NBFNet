@@ -60,14 +60,8 @@ class GeneralizedRelationalConv(MessagePassing):
             relation = self.relation.weight.expand(batch_size, -1, -1)
         if edge_weight is None:
             edge_weight = torch.ones(len(edge_type), device=input.device)
-        if torch.isnan(edge_weight).any().item():
-            raise ValueError("edge_weight has nan")
-        if torch.isnan(relation).any().item():
-            raise ValueError("relation has nan")
         output = self.propagate(input=input, relation=relation, boundary=boundary, edge_index=edge_index,
                                 edge_type=edge_type, size=size, edge_weight=edge_weight)
-        if torch.isnan(output).any().item():
-            raise ValueError("output has nan")
         # output=[]
         # for i in range(batch_size):
         #     o = self.propagate(input=input[i,None], relation=relation[i,None], boundary=boundary[i,None], edge_index=edge_index,
@@ -115,8 +109,6 @@ class GeneralizedRelationalConv(MessagePassing):
 
     def message(self, input_j, relation, boundary, edge_type):
         relation_j = relation.index_select(self.node_dim, edge_type)
-        if torch.isnan(relation_j).any().item():
-            raise ValueError("relation_j has nan")
         if self.message_func == "transe":
             message = input_j + relation_j
         elif self.message_func == "distmult":
@@ -132,58 +124,32 @@ class GeneralizedRelationalConv(MessagePassing):
 
         # augment messages with the boundary condition
         message = torch.cat([message, boundary], dim=self.node_dim)  # (num_edges + num_nodes, batch_size, input_dim)
-        if torch.isnan(message).any().item():
-            raise ValueError("message has nan")
         return message
 
     def aggregate(self, input, edge_weight, index, dim_size):
         # augment aggregation index with self-loops for the boundary condition
         index = torch.cat([index, torch.arange(dim_size, device=input.device)]) # (num_edges + num_nodes,)
-        if torch.isnan(index).any().item():
-            raise ValueError("index has nan")
         edge_weight = torch.cat([edge_weight, torch.ones(dim_size, device=input.device)])
-        if torch.isnan(edge_weight).any().item():
-            raise ValueError("edge_weight has nan")
         shape = [1] * input.ndim
         shape[self.node_dim] = -1
         edge_weight = edge_weight.view(shape)
 
         if self.aggregate_func == "pna":
             mean = scatter(input * edge_weight, index, dim=self.node_dim, dim_size=dim_size, reduce="mean")
-            if torch.isnan(mean).any().item():
-                raise ValueError("mean has nan")
             sq_mean = scatter(input ** 2 * edge_weight, index, dim=self.node_dim, dim_size=dim_size, reduce="mean")
-            if torch.isnan(sq_mean).any().item():
-                raise ValueError("sq_mean has nan")
             max = scatter(input * edge_weight, index, dim=self.node_dim, dim_size=dim_size, reduce="max")
-            if torch.isnan(max).any().item():
-                raise ValueError("max has nan")
             min = scatter(input * edge_weight, index, dim=self.node_dim, dim_size=dim_size, reduce="min")
-            if torch.isnan(min).any().item():
-                raise ValueError("min has nan")
             std = (sq_mean - mean ** 2).clamp(min=self.eps).sqrt()
-            if torch.isnan(std).any().item():
-                raise ValueError("std has nan")
             features = torch.cat([mean.unsqueeze(-1), max.unsqueeze(-1), min.unsqueeze(-1), std.unsqueeze(-1)], dim=-1)
             features = features.flatten(-2)
-            if torch.isnan(features).any().item():
-                raise ValueError("features has nan")
             degree_out = degree(index, dim_size).unsqueeze(0).unsqueeze(-1).clamp(min=1)
-            if torch.isnan(degree_out).any().item():
-                raise ValueError("degree_out has nan")
             scale = degree_out.log()
             scale = scale / scale.mean() if scale.mean() > 0 else scale
-            if torch.isnan(scale).any().item():
-                raise ValueError("scale has nan")
             scales = torch.cat([torch.ones_like(scale), scale, 1 / scale.clamp(min=1e-2)], dim=-1)
-            if torch.isnan(scales).any().item():
-                raise ValueError("scales has nan")
             output = (features.unsqueeze(-1) * scales.unsqueeze(-2)).flatten(-2)
         else:
             output = scatter(input * edge_weight, index, dim=self.node_dim, dim_size=dim_size,
                              reduce=self.aggregate_func)
-        if torch.isnan(output).any().item():
-            raise ValueError("output has nan")
 
         return output
 
@@ -256,7 +222,6 @@ class DistinctiveGeneralizedRelationalConv(GeneralizedRelationalConv):
     def forward(self, input, query, boundary, edge_index, edge_type, size, edge_weight=None,query_relations=None):
         batch_size = len(query)
 
-
         if self.dependent:
             # layer-specific relation features as a projection of input "query" (relation) embeddings
             relation = self.relation_linear(query).view(batch_size, self.num_relation, self.input_dim)
@@ -267,10 +232,6 @@ class DistinctiveGeneralizedRelationalConv(GeneralizedRelationalConv):
             edge_weight = torch.ones(len(edge_type), device=input.device)
 
 
-        if torch.isnan(edge_weight).any().item():
-            raise ValueError("edge_weight has nan")
-        if torch.isnan(relation).any().item():
-            raise ValueError("relation has nan")
 
         output=[]
         next_query_relations=[]
@@ -279,18 +240,10 @@ class DistinctiveGeneralizedRelationalConv(GeneralizedRelationalConv):
 
         for i in range(batch_size):
             ur = self.unmasked_tensor[query_relations[i]]
-            if torch.isnan(ur).any().item():
-                raise ValueError("ur has nan")
             ur=torch.sum(ur,dim=0)>0
-            if torch.isnan(ur).any().item():
-                raise ValueError("ur has nan 2")
 
             nqr=(torch.nonzero(ur).view(-1)+int(num_relations/2)) % num_relations
-            if torch.isnan(nqr).any().item():
-                raise ValueError("nqr has nan")
             uidxs = ur[edge_type]
-            if torch.isnan(uidxs).any().item():
-                raise ValueError("uidxs has nan")
             unmasked_idxs.append(uidxs)
             next_query_relations.append(nqr)
 
@@ -314,8 +267,6 @@ class DistinctiveGeneralizedRelationalConv(GeneralizedRelationalConv):
 
     def message(self, input_j, relation, boundary, edge_type,unmasked_idxs):
         relation_j = relation.index_select(self.node_dim, edge_type)
-        if torch.isnan(relation_j).any().item():
-            raise ValueError("relation_j has nan")
         if self.message_func == "transe":
             message = input_j + relation_j
         elif self.message_func == "distmult":
@@ -333,6 +284,4 @@ class DistinctiveGeneralizedRelationalConv(GeneralizedRelationalConv):
             idx=unmasked_idxs[i]
             message[i][idx==False,:]=self.eps
         message= torch.cat([message, boundary], dim=self.node_dim)  # (num_edges + num_nodes, batch_size, input_dim)
-        if torch.isnan(message).any().item():
-            raise ValueError("message has nan")
         return message

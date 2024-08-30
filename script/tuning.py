@@ -22,17 +22,17 @@ if __name__ == "__main__":
     args, vars = util.parse_args()
     cfg = util.load_config(args.config, context=vars)
     # working_dir = util.create_working_directory(cfg)
-    torch.use_deterministic_algorithms(True)
-    torch.manual_seed(args.seed + util.get_rank())
-    random.seed(args.seed + util.get_rank())
-    np.random.seed(args.seed + util.get_rank())
+    # torch.use_deterministic_algorithms(True)
+    # torch.manual_seed(args.seed + util.get_rank())
+    # random.seed(args.seed + util.get_rank())
+    # np.random.seed(args.seed + util.get_rank())
     device=util.get_device(cfg)
 
     search_space = {
 
 
-        #
-        # 'cfg.optimizer.lr': tune.choice([random.randint(1,9)*pow(10,-i) for i in range(2, 5)]),
+
+        # 'cfg.optimizer.lr': tune.choice([0.001*i for i in range(1,9)]+[0.0001*i for i in range(1,9)]+[0.00001*i for i in range(1,9)]),
         # 'cfg.model.short_cut': tune.choice(['yes', 'no']),
         # 'cfg.model.layer_norm': tune.choice(['yes', 'no']),
         # 'cfg.model.dependent': tune.choice(['yes', 'no']),
@@ -51,8 +51,6 @@ if __name__ == "__main__":
         'opts.recall_graph': tune.choice([True, False]),
         'opts.accuracy_graph_complement': tune.choice([True, False]),
         'opts.recall_graph_complement': tune.choice([True, False]),
-
-
 
         'cfg': cfg,
         'tuning': True,
