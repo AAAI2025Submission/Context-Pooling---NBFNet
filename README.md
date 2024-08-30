@@ -1,6 +1,8 @@
-## Context Pooling: Novel Query-specific Graph Pooling to Identify Logically Relevant Neighbors for Inductive Link Prediction in Knowledge Graphs
+## Context Pooling: Query-specific Graph Pooling for Generic Inductive Link Prediction in Knowledge Graphs
 
-This is the repository for IJCAI anonymous submission **Context Pooling: Novel Query-specific Graph Pooling to Identify Logically Relevant Neighbors for Inductive Link Prediction in Knowledge Graphs**.
+
+
+This is the repository for AAAI anonymous submission **Context Pooling: Query-specific Graph Pooling for Generic Inductive Link Prediction in Knowledge Graphs**.
 
 In this paper, we introduce a novel method, named Context Pooling, to enhance GNN-based models' efficacy for link predictions in KGs. To our best of knowledge, Context Pooling is the first methodology that applies graph pooling in KGs. 
 Additionally, Context Pooling is first-of-its-kind to enable the generation of query-specific graphs for inductive settings, where testing entities are unseen during training.
@@ -18,7 +20,9 @@ Additionally, Context Pooling is first-of-its-kind to enable the generation of q
 
 ## Quick Start
 
-This repository contains the implementation of `RED-GNN+DP`, which is our distinctive pooling architecture based on `RED-GNN`(https://github.com/LARS-research/RED-GNN).
+This repository contains the implementation of `NBFNet+CP`, which is our Context Pooling architecture based on [`RED-GNN`](https://github.com/LARS-research/RED-GNN).
+
+For the implementation of `NBFNet+CP`, please refer it [here](https://github.com/AAAI2025Submission/Context-Pooling---NBFNet).
 
 For transductive and inductive link prediction, we've set the default parameters in `main.py` in the respective folders. Please train and test using:
 ```shell
@@ -30,9 +34,9 @@ If you want to add a new dataset and fine-tune parameters by yourself. Please us
 ./tuning.sh
 ```
 
-## Unapproximated version
+For parameters in `NBFNet`, please refer to the `*.yaml` files in the `config\` folders.
+For parameters in `Context Pooling`, please adjust them in `train.sh` and `tuning.sh`.
 
-We have also provided the code for unapproximated version of distinctive pooling, please switch to branch `unapproximated`.
 
 ## Citations
 
