@@ -20,9 +20,9 @@ Additionally, Context Pooling is first-of-its-kind to enable the generation of q
 
 ## Quick Start
 
-This repository contains the implementation of `NBFNet+CP`, which is our Context Pooling architecture based on [`RED-GNN`](https://github.com/LARS-research/RED-GNN).
+This repository contains the implementation of `NBFNet+CP`, which is our Context Pooling architecture based on [`NBFNet`](https://github.com/KiddoZhu/NBFNet-PyG).
 
-For the implementation of `NBFNet+CP`, please refer it [here](https://github.com/AAAI2025Submission/Context-Pooling---NBFNet).
+For the implementation of `NBFNet+CP`, please refer it [here](https://github.com/AAAI2025Submission/Context-Pooling).
 
 For transductive and inductive link prediction, we've set the default parameters in `main.py` in the respective folders. Please train and test using:
 ```shell
