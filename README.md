@@ -2,12 +2,12 @@
 
 
 
-This is the repository for AAAI anonymous submission **Context Pooling: Query-specific Graph Pooling for Generic Inductive Link Prediction in Knowledge Graphs**.
+This is the repository for ECML-PKDD 2025 submission **Context Pooling: Query-specific Graph Pooling for Generic Inductive Link Prediction in Knowledge Graphs**.
 
 In this paper, we introduce a novel method, named Context Pooling, to enhance GNN-based models' efficacy for link predictions in KGs. To our best of knowledge, Context Pooling is the first methodology that applies graph pooling in KGs. 
 Additionally, Context Pooling is first-of-its-kind to enable the generation of query-specific graphs for inductive settings, where testing entities are unseen during training.
 
-![fig](https://github.com/IJCAI2024AnonymousSubmission/Context-Pooling/blob/master/fig.png)
+![fig](https://github.com/ECMLPKDD2025Submission/Context-Pooling/blob/master/fig.png)
 
 ## Requirements
 
@@ -22,7 +22,7 @@ Additionally, Context Pooling is first-of-its-kind to enable the generation of q
 
 This repository contains the implementation of `NBFNet+CP`, which is our Context Pooling architecture based on [`NBFNet`](https://github.com/KiddoZhu/NBFNet-PyG).
 
-For the implementation of `RED-GNN+CP`, please refer it [here](https://github.com/AAAI2025Submission/Context-Pooling).
+For the implementation of `RED-GNN+CP`, please refer it [here](https://github.com/ECMLPKDD2025Submission/Context-Pooling).
 
 For transductive and inductive link prediction, we've set the default parameters in `main.py` in the respective folders. Please train and test using:
 ```shell
